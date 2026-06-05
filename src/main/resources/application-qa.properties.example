@@ -1,0 +1,9 @@
+# Copy to application-qa.properties and set QA environment values (not committed to Git).
+server.port=8080
+spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=false
