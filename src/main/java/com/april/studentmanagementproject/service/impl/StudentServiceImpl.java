@@ -65,4 +65,12 @@ public class StudentServiceImpl implements StudentService {
         Student updatedStudent = studentRepository.save(student);
         return studentMapper.toDto(updatedStudent);
     }
+
+    @Override
+    public void deleteStudent(Long id) {
+        if (!studentRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Student", "id", id);
+        }
+        studentRepository.deleteById(id);
+    }
 }
