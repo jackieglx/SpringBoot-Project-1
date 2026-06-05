@@ -45,4 +45,24 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
         return studentMapper.toDto(student);
     }
+
+    @Override
+    public StudentDto updateStudent(Long id, StudentDto studentDto) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
+
+        studentRepository.findByEmail(studentDto.getEmail())
+                .ifPresent(existing -> {
+                    if (!existing.getId().equals(id)) {
+                        throw new IllegalArgumentException("Email already exists: " + studentDto.getEmail());
+                    }
+                });
+
+        student.setFirstName(studentDto.getFirstName());
+        student.setLastName(studentDto.getLastName());
+        student.setEmail(studentDto.getEmail());
+
+        Student updatedStudent = studentRepository.save(student);
+        return studentMapper.toDto(updatedStudent);
+    }
 }
