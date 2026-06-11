@@ -2,6 +2,7 @@ package com.april.studentmanagementproject.controller;
 
 import com.april.studentmanagementproject.dto.StudentDto;
 import com.april.studentmanagementproject.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ public class StudentController {
 
     /** Create a new student. Returns 201 Created. */
     @PostMapping
-    public ResponseEntity<StudentDto> addStudent(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<StudentDto> addStudent(@Valid @RequestBody StudentDto studentDto) {
         StudentDto createdStudent = studentService.addStudent(studentDto);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
@@ -49,7 +50,7 @@ public class StudentController {
 
     /** Update an existing student by id. */
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @Valid @RequestBody StudentDto studentDto) {
         return ResponseEntity.ok(studentService.updateStudent(id, studentDto));
     }
 
