@@ -10,6 +10,8 @@ public interface StudentService {
 
     List<StudentDto> getAllStudents();
 
+    List<StudentDto> getStudents(String lastName);
+
     StudentDto getStudentById(Long id);
 
     StudentDto updateStudent(Long id, StudentDto studentDto);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,10 +37,10 @@ public class StudentController {
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
 
-    /** Get all students. */
+    /** Get all students, or filter by last name. */
     @GetMapping
-    public ResponseEntity<List<StudentDto>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
+    public ResponseEntity<List<StudentDto>> getAllStudents(@RequestParam(required = false) String lastName) {
+        return ResponseEntity.ok(studentService.getStudents(lastName));
     }
 
     /** Get a student by id. Returns 404 if not found. */
