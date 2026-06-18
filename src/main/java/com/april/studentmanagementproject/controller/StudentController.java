@@ -2,6 +2,7 @@ package com.april.studentmanagementproject.controller;
 
 import com.april.studentmanagementproject.dto.StudentDto;
 import com.april.studentmanagementproject.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,15 +32,15 @@ public class StudentController {
 
     /** Create a new student. Returns 201 Created. */
     @PostMapping
-    public ResponseEntity<StudentDto> addStudent(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<StudentDto> addStudent(@Valid @RequestBody StudentDto studentDto) {
         StudentDto createdStudent = studentService.addStudent(studentDto);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
 
-    /** Get all students. */
+    /** Get all students, or filter by last name. */
     @GetMapping
-    public ResponseEntity<List<StudentDto>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
+    public ResponseEntity<List<StudentDto>> getAllStudents(@RequestParam(required = false) String lastName) {
+        return ResponseEntity.ok(studentService.getStudents(lastName));
     }
 
     /** Get a student by id. Returns 404 if not found. */
@@ -49,7 +51,7 @@ public class StudentController {
 
     /** Update an existing student by id. */
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @Valid @RequestBody StudentDto studentDto) {
         return ResponseEntity.ok(studentService.updateStudent(id, studentDto));
     }
 

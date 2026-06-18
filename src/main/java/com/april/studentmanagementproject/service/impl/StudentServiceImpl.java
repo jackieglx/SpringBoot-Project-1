@@ -40,6 +40,15 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<StudentDto> getStudents(String lastName) {
+        if (lastName == null || lastName.isBlank()) {
+            return getAllStudents();
+        }
+
+        return studentMapper.toDtoList(studentRepository.findByLastNameIgnoreCase(lastName));
+    }
+
+    @Override
     public StudentDto getStudentById(Long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
