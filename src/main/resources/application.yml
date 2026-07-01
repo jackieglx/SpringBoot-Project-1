@@ -1,0 +1,10 @@
+app:
+  resilience:
+    name-aggregation:
+      failure-rate-threshold: 50
+      minimum-number-of-calls: 2
+      sliding-window-size: 5
+      wait-duration-in-open-state: 30s
+      permitted-number-of-calls-in-half-open-state: 2
+      max-retry-attempts: 3
+      retry-wait-duration: 300ms
