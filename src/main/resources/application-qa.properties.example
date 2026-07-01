@@ -1,9 +1,9 @@
-# Copy to application-qa.properties and set QA environment values (not committed to Git).
-server.port=8080
-spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.datasource.driver-class-name=org.postgresql.Driver
-
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.show-sql=false
+# QA or AWS ECS environment variables.
+SERVER_PORT=8080
+SPRING_PROFILES_ACTIVE=prod
+SPRING_DATASOURCE_URL=jdbc:postgresql://your-rds-endpoint.amazonaws.com:5432/your_database
+SPRING_DATASOURCE_USERNAME=your_username
+SPRING_DATASOURCE_PASSWORD=use-secrets-manager
+SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+SPRING_JPA_SHOW_SQL=false
