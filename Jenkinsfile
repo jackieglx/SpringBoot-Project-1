@@ -78,7 +78,8 @@ pipeline {
                                 docker network inspect \\\"\\$NETWORK_NAME\\\" >/dev/null 2>&1 || docker network create \\\"\\$NETWORK_NAME\\\"
                             fi
 
-                            docker pull ${DOCKER_IMAGE}:latest
+                            echo "Deploying ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                            docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
                             docker stop ${CONTAINER_NAME} || true
                             docker rm ${CONTAINER_NAME} || true
                             docker run -d \\
@@ -87,7 +88,7 @@ pipeline {
                                 --network \\\"\\$NETWORK_NAME\\\" \\
                                 --env-file ${EC2_ENV_FILE} \\
                                 -p ${APP_PORT}:8080 \\
-                                ${DOCKER_IMAGE}:latest
+                                ${DOCKER_IMAGE}:${DOCKER_TAG}
 
                             docker image prune -f
                             docker ps --filter name=${CONTAINER_NAME}
