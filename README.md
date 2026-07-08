@@ -151,6 +151,83 @@ X-Downstream-Url: http://3.128.166.190:8080/name/aggregation
 }
 ```
 
+# Kafka local cluster
+
+This project includes a local Kafka cluster for development and validation.
+
+Start three Kafka brokers:
+
+```
+docker compose up -d kafka-1 kafka-2 kafka-3 kafka-init
+```
+
+The compose file starts three brokers and creates this topic:
+
+```
+student-events
+```
+
+Topic settings:
+
+```
+partitions=3
+replication-factor=3
+```
+
+Spring Boot connects to the local cluster with:
+
+```
+SPRING_KAFKA_BOOTSTRAP_SERVERS=localhost:19092,localhost:19093,localhost:19094
+APP_KAFKA_TOPIC_NAME=student-events
+APP_KAFKA_CONSUMER_GROUP_ID=student-management-consumers
+APP_KAFKA_LISTENER_CONCURRENCY=3
+```
+
+Produce a message through the backend:
+
+```
+curl -X POST "http://localhost:8080/api/kafka/messages" \
+  -H "Content-Type: application/json" \
+  -d '{"key":"student-1","value":"student-created"}'
+```
+
+Check consumed messages:
+
+```
+curl "http://localhost:8080/api/kafka/messages/consumed"
+```
+
+Describe the topic from Docker:
+
+```
+docker exec student-kafka-1 /opt/kafka/bin/kafka-topics.sh \
+  --bootstrap-server kafka-1:9092 \
+  --describe \
+  --topic student-events
+```
+
+# Local PostgreSQL
+
+Start the local PostgreSQL database:
+
+```
+docker compose up -d student-postgres
+```
+
+The local database environment variables are:
+
+```
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/studentdb
+SPRING_DATASOURCE_USERNAME=appuser
+SPRING_DATASOURCE_PASSWORD=YourStrongPassword123!
+```
+
+Check database health:
+
+```
+docker exec student-postgres pg_isready -U appuser -d studentdb
+```
+
 你的服务就把这个完整结果返回给 Suzy。
 
 如果 Allen 调用失败，fallback 返回：
